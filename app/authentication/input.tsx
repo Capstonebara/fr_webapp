@@ -2,8 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { useFormContext, useWatch } from "react-hook-form";
 import { AuthenticatorSchema } from "./type";
-import useSWR from "swr";
-import { set } from "zod";
+import { authenApi } from "./api";
 
 export function InputValid() {
   const { control, setValue } = useFormContext<AuthenticatorSchema>();
@@ -15,15 +14,12 @@ export function InputValid() {
 
     try {
       // Make the API request using fetch
-      const response = await fetch(
-        `http://localhost:8000/auth/email/${email}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${authenApi}${email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("API request failed");
